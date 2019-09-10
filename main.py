@@ -29,10 +29,74 @@ class A:
 
     def limparJogada(self):
         self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].setJogadas("CLEAR")), font="Times 25 bold", fg="red", bg="black")
+        self.__playersjogando[self.getVez()].setResetar()
 
     def fazerApostaBotoes(self,numero):
-        self.__playersjogando[self.getVez()].setJogadas(numero)
+        if numero == "ODD":
+            for i in range(1,36):
+                if i%2!=0:
+                    self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("odd")
+        elif numero == "EVEN":
+            for i in range(1,37):
+                if i%2==0:
+                    self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("even")
+        elif numero == "RED":
+            lista = [1,3,5,7,9,12,14,16,18,21,23,25,27,28,30,32,34,36]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("red")
+        elif numero == "BLACK":
+            lista = [2,4,6,8,10,11,13,15,17,19,20,22,24,26,29,31,33,35]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("black")
+        elif numero == "UMTO18":
+            lista = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("umto18")
+        elif numero == "DEZNOVETO36":
+            lista = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,34,35,36]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("deznoveto36")
+        elif numero == "LINHA1":
+            lista = [1,4,7,10,13,16,19,22,25,28,31,34]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("umto34")
+        elif numero == "LINHA2":
+            lista = [2,5,8,11,14,17,20,23,26,29,32,35]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("doisto35")
+        elif numero == "LINHA3":
+            lista = [3,6,9,12,15,18,21,24,27,30,33,36]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("tresto36")
+        elif numero == "UMST12":
+            lista = [1,2,3,4,5,6,7,8,9,10,11,12]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("umto12")
+        elif numero == "DOISST12":
+            lista = [13,14,15,16,17,18,19,20,21,22,23,24]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("trezeto24")
+        elif numero == "TRESST12":
+            lista = [25,26,27,28,29,30,31,32,33,34,35,36]
+            for i in lista:
+                self.__playersjogando[self.getVez()].setJogadas(i)
+            self.__playersjogando[self.getVez()].setCondicoes("vintecincoto36")
+        else:
+            self.__playersjogando[self.getVez()].setJogadas(numero)
+
         self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
+
 
     # def loopingJogada(self):
     #     for i in range(self.players):
@@ -76,6 +140,44 @@ class A:
     def getRoleta(self):
         return self.__roleta
 
+    def setpl(self, qtde):
+        self.__players = qtde
+        self.jogadorestit.configure(text='QUANTIDADE DE JOGADORES: {}'.format(self.__players), font="Times 25 bold",
+                                    fg="red", bg="black")
+
+    def setModo(self, modo):
+        self.__modo = modo
+        self.modedejogotit.configure(text='MODO DE JOGO: {}'.format(self.__modo), font="Times 25 bold", fg="red",
+                                     bg="black")
+
+    def setPlayers(self):
+        nomes = ["ALPHA", "BETA", "CHARLIE", "DELTA"]
+        for i in range(self.__players):
+            nomes[i] = Player(nomes[i])
+            a = nomes[i]
+
+            self.__playersjogando.append(a)
+
+    def setTipBanco(self, valor):
+        self.__banco += valor
+
+    def setVez(self):
+        self.__vez += 1
+
+        if self.getVez() == self.getPl():
+            self.jogadordavez.configure(text='',font="Times 25 bold", fg="red", bg="black")
+            self.valornatela.configure(text='',font="Times 25 bold", fg="red", bg="black")
+            self.listadejogadas.configure(text='',font="Times 25 bold", fg="red", bg="black")
+            self.jogadortip.configure(text='',font="Times 25 bold", fg="red", bg="black")
+
+            self.clique.configure(text='CLIQUE! =>', font="Times 20 bold", fg="red", bg="black")
+
+        self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
+        self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
+        self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
+        self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
+
+
     def verificarApostasJogadores(self):
         for i in range(self.__players):
             if self.getRoleta().getNum() in self.__playersjogando[i].getJogadas():
@@ -103,44 +205,6 @@ class A:
         self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
         self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
         self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
-
-    def setTipBanco(self,valor):
-        self.__banco += valor
-
-    def setVez(self):
-        self.__vez += 1
-
-        if self.getVez() == self.getPl():
-            self.jogadordavez.configure(text='',font="Times 25 bold", fg="red", bg="black")
-            self.valornatela.configure(text='',font="Times 25 bold", fg="red", bg="black")
-            self.listadejogadas.configure(text='',font="Times 25 bold", fg="red", bg="black")
-            self.jogadortip.configure(text='',font="Times 25 bold", fg="red", bg="black")
-
-            self.clique.configure(text='CLIQUE! =>', font="Times 20 bold", fg="red", bg="black")
-
-        self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
-        self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
-        self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
-        self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
-
-    def setpl(self,qtde):
-        self.__players = qtde
-        self.jogadorestit.configure(text='QUANTIDADE DE JOGADORES: {}'.format(self.__players), font="Times 25 bold", fg="red", bg="black")
-
-    def setModo(self,modo):
-        self.__modo = modo
-        self.modedejogotit.configure(text='MODO DE JOGO: {}'.format(self.__modo), font="Times 25 bold", fg="red", bg="black")
-
-    def setPlayers(self):
-        nomes = ["ALPHA","BETA","CHARLIE","DELTA"]
-        for i in range(self.__players):
-            nomes[i] = Player(nomes[i])
-            a = nomes[i]
-
-            self.__playersjogando.append(a)
-
-    def setTipBanco(self,valor):
-        self.__banco += valor
 
     def menu(self):
 
@@ -226,21 +290,21 @@ class A:
         ap31 = tkinter.Button(master=root, text="31", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes(31)).place(x=1533, y=769)
         ap34 = tkinter.Button(master=root, text="34", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes(34)).place(x=1630, y=769)
 
-        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1727, y=462)
-        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1727, y=615)
-        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1727, y=769)
+        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("LINHA3")).place(x=1727, y=462)
+        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("LINHA2")).place(x=1727, y=615)
+        linha1 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("LINHA1")).place(x=1727, y=769)
 
         zero = tkinter.Button(master=root, text="0", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes(0)).place(x=471, y=615)
-        ap1to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=710, y=830)
-        ap2to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1100, y=830)
-        ap3to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1490, y=830)
+        ap1to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("UMST12")).place(x=710, y=830)
+        ap2to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("DOISST12")).place(x=1100, y=830)
+        ap3to12 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("TRESST12")).place(x=1490, y=830)
 
-        umto18 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=615, y=900)
-        even = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=806, y=900)
-        red = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=997, y=900)
-        black = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1188, y=900)
-        odd = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1379, y=900)
-        dezenoveto36 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold").place(x=1579, y=900)
+        umto18 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("UMTO18")).place(x=615, y=900)
+        even = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("EVEN")).place(x=806, y=900)
+        red = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("RED")).place(x=997, y=900)
+        black = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("BLACK")).place(x=1188, y=900)
+        odd = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("ODD")).place(x=1379, y=900)
+        dezenoveto36 = tkinter.Button(master=root, text="", width=1, height=0, fg="red", bg="yellow",font="Times 13 bold",command=lambda:self.fazerApostaBotoes("DEZNOVETO36")).place(x=1579, y=900)
 
 
         um = tkinter.Button(master=root, text="1", width=5, height=0, fg="red", bg="black",font="Times 13 bold",command=lambda:self.fazerAposta(1)).place(x=50, y=750)
