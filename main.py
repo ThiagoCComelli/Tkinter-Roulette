@@ -44,6 +44,7 @@ class A:
     #                 if self.playersjogando[i].getProsseguir() == True:
     #                     break
 
+
     def voltarMenu(self):
         if self.getPl() == 0:
             self.menu()
