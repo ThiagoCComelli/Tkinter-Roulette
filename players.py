@@ -26,6 +26,31 @@ class Player():
         self.__umto18 = False
         self.__deznoveto36 = False
 
+    def getumto12(self):
+        return self.__umto12
+    def gettrezeto24(self):
+        return self.__trezeto24
+    def getvintecincoto36(self):
+        return self.__vintecincoto36
+    def getunto34(self):
+        return self.__umto34
+    def getdoisto35(self):
+        return self.__doisto35
+    def gettresto36(self):
+        return self.__tresto36
+    def getred(self):
+        return self.__red
+    def getublack(self):
+        return self.__black
+    def geteven(self):
+        return self.__even
+    def getodd(self):
+        return self.__odd
+    def getumto18(self):
+        return self.__umto18
+    def getdeznoveto36(self):
+        return self.__deznoveto36
+
     def getNome(self):
         return self.__nome
     def getTip(self):
@@ -39,6 +64,8 @@ class Player():
     def getRodadas(self):
         return self.__rodadasSemApostar
 
+    def setResetarSemJogar(self):
+        self.__rodadasSemApostar = 0
     def setRodadasSemApostar(self):
         self.__rodadasSemApostar += 1
     def setTip(self,value):
