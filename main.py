@@ -8,7 +8,7 @@ from random import randint
 from roleta import Roleta
 from players import Player
 
-class A:
+class Cassino:
     def __init__(self, master):
         self.__roleta = Roleta()
         self.__players = 0
@@ -116,7 +116,7 @@ class A:
         self.__banco += valor
 
     def setPassar(self):
-        if self.__playersjogando[self.getVez()].getRodadas() <= 3:
+        if self.__playersjogando[self.getVez()].getRodadas() <= 2:
             self.__playersjogando[self.getVez()].setRodadasSemApostar()
             self.__playersjogando[self.getVez()].setProsseguir(False)
 
@@ -165,87 +165,73 @@ class A:
             if self.__playersjogando[i].getProsseguir() == True:
                 # intern
                 apostou = self.__playersjogando[i].getAposta()
-                if self.getRoleta().getNum() in self.__playersjogando[i].getJogadas():
-                    self.getPlayersJogando()[i].setTip(apostou*36)
-                    self.setTipBanco(-apostou*36)
-                else:
+                if self.getRoleta().getNum() == 0:
+                    break
+                elif self.getRoleta().getNum() in self.__playersjogando[i].getJogadas():
+                    print("1")
+                    if self.getPlayersJogando()[i].getTip() >= apostou*36:
+                        self.getPlayersJogando()[i].setTip(apostou*36)
+                        self.setTipBanco(-apostou*36)
+                elif (self.getRoleta().getNum() in self.__playersjogando[i].getJogadas()) == False:
                     self.setTipBanco(apostou)
                     self.getPlayersJogando()[i].setTip(-apostou)
 
                 #extern
                 if self.__playersjogando[i].getumto12() == True:
+                    print("3")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].gettrezeto24() == True:
+                    print("5")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getunto34() == True:
+                    print("7")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getdoisto35() == True:
+                    print("9")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].gettresto36() == True:
+                    print("11")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getred() == True:
+                    print("13")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getublack() == True:
+                    print("15")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].geteven() == True:
+                    print("17")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getodd() == True:
+                    print("19")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getumto18() == True:
+                    print("21")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
 
                 if self.__playersjogando[i].getdeznoveto36() == True:
+                    print("23")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
+
                 else:
                     self.setTipBanco(apostou)
                     self.getPlayersJogando()[i].setTip(-apostou)
@@ -258,14 +244,14 @@ class A:
 
         self.bancot.configure(text='DINHEIRO DO BANCO: {}'.format(self.__banco), font="Times 25 bold", fg="red",bg="black")
 
-        if self.getTipBanco() < 0:
-            self.photo = PhotoImage(file="images/preto.gif")
-            self.backlabel = Label(root, image=self.photo).place(x=-1, y=-1)
-
-            self.gameover = tk.Label(root)
-            self.gameover.grid(row=0, column=0)
-            self.gameover.configure(text='GAME OVER - CASSINO FALIU'.format(self.getTipBanco()), font="Times 25 bold",fg="red", bg="black")
-            self.gameover.place(x=500, y=450)
+        # if self.getTipBanco() < 0:
+        #     self.photo = PhotoImage(file="images/preto.gif")
+        #     self.backlabel = Label(root, image=self.photo).place(x=-1, y=-1)
+        #
+        #     self.gameover = tk.Label(root)
+        #     self.gameover.grid(row=0, column=0)
+        #     self.gameover.configure(text='GAME OVER - CASSINO FALIU'.format(self.getTipBanco()), font="Times 25 bold",fg="red", bg="black")
+        #     self.gameover.place(x=500, y=450)
 
 
 
@@ -464,7 +450,7 @@ class A:
 
 
 root = tk.Tk()
-A(root)
+Cassino(root)
 root.mainloop()
 
 
