@@ -141,24 +141,31 @@ class Cassino:
             self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()),font="Times 25 bold", fg="red", bg="black")
             self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()),font="Times 25 bold", fg="red", bg="black")
 
+    def updatetimer(self):
+        self.validade.configure(text='', font="Times 60 bold", fg="yellow", bg="black")
+
     def setVez(self):
+        if (self.__playersjogando[self.getVez()].getAposta()*len(self.__playersjogando[self.getVez()].getJogadas())) >= self.__playersjogando[self.getVez()].getTip():
+            self.validade.configure(text='APOSTA INVALIDA', font="Times 100 bold", fg="yellow", bg="black")
+            self.validade.after(2000, self.updatetimer)
 
-        if self.__playersjogando[self.getVez()].getAposta() != 0 and len(self.__playersjogando[self.getVez()].getJogadas()) > 0:
-            self.__playersjogando[self.getVez()].setResetarSemJogar()
-            self.__vez += 1
+        else:
+            if self.__playersjogando[self.getVez()].getAposta() != 0 and len(self.__playersjogando[self.getVez()].getJogadas()) > 0:
+                self.__playersjogando[self.getVez()].setResetarSemJogar()
+                self.__vez += 1
 
-            if self.getVez() == self.getPl():
-                self.jogadordavez.configure(text='',font="Times 25 bold", fg="red", bg="black")
-                self.valornatela.configure(text='',font="Times 25 bold", fg="red", bg="black")
-                self.listadejogadas.configure(text='',font="Times 25 bold", fg="red", bg="black")
-                self.jogadortip.configure(text='',font="Times 25 bold", fg="red", bg="black")
+                if self.getVez() == self.getPl():
+                    self.jogadordavez.configure(text='',font="Times 25 bold", fg="red", bg="black")
+                    self.valornatela.configure(text='',font="Times 25 bold", fg="red", bg="black")
+                    self.listadejogadas.configure(text='',font="Times 25 bold", fg="red", bg="black")
+                    self.jogadortip.configure(text='',font="Times 25 bold", fg="red", bg="black")
 
-                self.clique.configure(text='CLIQUE! =>', font="Times 20 bold", fg="red", bg="black")
+                    self.clique.configure(text='CLIQUE! =>', font="Times 20 bold", fg="red", bg="black")
 
-            self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
-            self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
-            self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
-            self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
+                self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
+                self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
+                self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
+                self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
 
     def verificarApostasJogadores(self):
         for i in range(self.__players):
@@ -310,6 +317,7 @@ class Cassino:
         self.jogadores.configure(text='JOADORES:', font="Times 25 bold", fg="red", bg="black")
         self.jogadores.place(x=181, y=450)
 
+
         self.root = root.geometry("1850x1013"), root.resizable(width=False, height=False)
 
         add1 = tkinter.Button(master=root, text="EUROPEU", width=13, command=lambda: self.setModo("EUROPEU"), fg="red",bg="black", font="Times 13 bold").place(x=400, y=300)
@@ -322,6 +330,8 @@ class Cassino:
         add7 = tkinter.Button(master=root, text="QUATRO JOGADORES", width=20, command=lambda: self.setpl(4), fg="red",bg="black", font=("Times 13 bold")).place(x=400, y=555)
 
         add8 = tkinter.Button(master=root, text="JOGAR", width=20, command=self.jogar, fg="red", bg="black",font=("Times 13 bold")).place(x=1000, y=600)
+
+
 
     def apostas(self):
 
@@ -447,6 +457,13 @@ class Cassino:
             self.bancot.grid(row=0, column=0)
             self.bancot.configure(text='DINHEIRO DO BANCO: {}'.format(self.__banco), font="Times 25 bold", fg="red", bg="black")
             self.bancot.place(x=535, y=965)
+
+            self.validade = tk.Label(root)
+            self.validade.grid(row=0, column=0)
+            self.validade.configure(text='', font="Times 60 bold", fg="yellow", bg="black")
+            self.validade.place(x=120, y=100)
+
+
 
 
 root = tk.Tk()
