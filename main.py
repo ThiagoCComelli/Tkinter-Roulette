@@ -166,75 +166,75 @@ class Cassino:
                 # intern
                 apostou = self.__playersjogando[i].getAposta()
                 if self.getRoleta().getNum() == 0:
+                    self.setTipBanco(apostou)
                     break
+
                 elif self.getRoleta().getNum() in self.__playersjogando[i].getJogadas():
                     print("1")
-                    if self.getPlayersJogando()[i].getTip() >= apostou*36:
-                        self.getPlayersJogando()[i].setTip(apostou*36)
-                        self.setTipBanco(-apostou*36)
-                elif (self.getRoleta().getNum() in self.__playersjogando[i].getJogadas()) == False:
+                    self.getPlayersJogando()[i].setTip(apostou*36)
+                    self.setTipBanco(-apostou*36)
+                else:
+                    self.__playersjogando[i].getNome()
                     self.setTipBanco(apostou)
                     self.getPlayersJogando()[i].setTip(-apostou)
 
                 #extern
-                if self.__playersjogando[i].getumto12() == True:
+                if self.__playersjogando[i].getumto12() == True and self.getRoleta().umto12check(self.getRoleta().getNum()):
                     print("3")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
 
-                if self.__playersjogando[i].gettrezeto24() == True:
+                if self.__playersjogando[i].gettrezeto24() == True and self.getRoleta().trezeto24check(self.getRoleta().getNum()):
                     print("5")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
 
-                if self.__playersjogando[i].getunto34() == True:
+                if self.__playersjogando[i].getunto34() == True and self.getRoleta().umto34check(self.getRoleta().getNum()):
                     print("7")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
 
-                if self.__playersjogando[i].getdoisto35() == True:
+                if self.__playersjogando[i].getdoisto35() == True and self.getRoleta().doisto35check(self.getRoleta().getNum()):
                     print("9")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
 
-                if self.__playersjogando[i].gettresto36() == True:
+                if self.__playersjogando[i].gettresto36() == True and self.getRoleta().tresto36check(self.getRoleta().getNum()):
                     print("11")
                     self.getPlayersJogando()[i].setTip(apostou*3)
                     self.setTipBanco(-apostou*3)
 
-                if self.__playersjogando[i].getred() == True:
+                if self.__playersjogando[i].getred() == True and self.getRoleta().redlistcheck(self.getRoleta().getNum()):
                     print("13")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                if self.__playersjogando[i].getublack() == True:
+                if self.__playersjogando[i].getublack() == True and self.getRoleta().blacklistcheck(self.getRoleta().getNum()):
                     print("15")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                if self.__playersjogando[i].geteven() == True:
+                if self.__playersjogando[i].geteven() == True and self.getRoleta().evenlistcheck(self.getRoleta().getNum()):
                     print("17")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                if self.__playersjogando[i].getodd() == True:
+                if self.__playersjogando[i].getodd() == True and self.getRoleta().oddlistcheck(self.getRoleta().getNum()):
                     print("19")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                if self.__playersjogando[i].getumto18() == True:
+                if self.__playersjogando[i].getumto18() == True and self.getRoleta().umto18listcheck(self.getRoleta().getNum()):
                     print("21")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                if self.__playersjogando[i].getdeznoveto36() == True:
+                if self.__playersjogando[i].getdeznoveto36() == True and self.getRoleta().deznoveto36check(self.getRoleta().getNum()):
                     print("23")
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-                else:
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
+
 
 
         for i in self.getPlayersJogando():

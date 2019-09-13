@@ -39,6 +39,80 @@ class Roleta():
     def getNum(self):
         return self.__num
 
+
+    def redlistcheck (self,num):
+        if num in self.__redlist:
+            return True
+        else:
+            return False
+
+    def blacklistcheck(self, num):
+        if num in self.__blacklist:
+            return True
+        else:
+            return False
+
+    def evenlistcheck(self, num):
+        if num in self.__evenlist:
+            return True
+        else:
+            return False
+
+    def oddlistcheck(self, num):
+        if num in self.__oddlist:
+            return True
+        else:
+            return False
+
+    def umto18listcheck(self, num):
+        if num in self.__umto18list:
+            return True
+        else:
+            return False
+
+    def deznoveto36check(self, num):
+        if num in self.__deznoveto36list:
+            return True
+        else:
+            return False
+
+    def tresto36check(self, num):
+        if num in self.__tresto36list:
+            return True
+        else:
+            return False
+
+    def doisto35check(self, num):
+        if num in self.__doisto35list:
+            return True
+        else:
+            return False
+
+    def umto34check(self, num):
+        if num in self.__umto34list:
+            return True
+        else:
+            return False
+
+    def vintecincoto36check(self, num):
+        if num in self.__vintecincoto36list:
+            return True
+        else:
+            return False
+
+    def trezeto24check(self, num):
+        if num in self.__trezeto24list:
+            return True
+        else:
+            return False
+
+    def umto12check(self, num):
+        if num in self.__umto12list:
+            return True
+        else:
+            return False
+
+
 """
     def fazerApostaBotoes(self,numero):
         if numero == "ODD":
