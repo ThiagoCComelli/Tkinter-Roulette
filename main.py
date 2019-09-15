@@ -17,6 +17,8 @@ class Cassino:
         self.__modo = "NENHUM"
         self.__banco = 1000
         self.__apostados = []
+        self.__falencia = []
+        self.__faliram = ""
         self.menu()
 
     def fazerAposta(self,valor):
@@ -116,10 +118,17 @@ class Cassino:
         self.__banco += valor
 
     def setPassar(self):
-        if self.__playersjogando[self.getVez()].getRodadas() <= 2:
+        if self.__playersjogando[self.getVez()].getTip() <= 0:
+            self.__vez += 1
+
+            self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()),font="Times 25 bold", fg="red", bg="black")
+            self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()),font="Times 25 bold", fg="red", bg="black")
+            self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()),font="Times 25 bold", fg="red", bg="black")
+            self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()),font="Times 25 bold", fg="red", bg="black")
+
+        elif self.__playersjogando[self.getVez()].getRodadas() <= 2:
             self.__playersjogando[self.getVez()].setRodadasSemApostar()
             self.__playersjogando[self.getVez()].setProsseguir(False)
-
 
             self.__vez += 1
 
@@ -145,7 +154,7 @@ class Cassino:
         self.validade.configure(text='', font="Times 60 bold", fg="yellow", bg="black")
 
     def setVez(self):
-        if (self.__playersjogando[self.getVez()].getAposta()*len(self.__playersjogando[self.getVez()].getJogadas())) >= self.__playersjogando[self.getVez()].getTip():
+        if (self.__playersjogando[self.getVez()].getAposta()*len(self.__playersjogando[self.getVez()].getJogadas())) > self.__playersjogando[self.getVez()].getTip():
             self.validade.configure(text='APOSTA INVALIDA', font="Times 100 bold", fg="yellow", bg="black")
             self.validade.after(2000, self.updatetimer)
 
@@ -169,6 +178,7 @@ class Cassino:
 
     def verificarApostasJogadores(self):
         for i in range(self.__players):
+            qtde = len(self.__playersjogando[self.getVez()].getJogadas())
             if self.__playersjogando[i].getProsseguir() == True:
                 # intern
                 apostou = self.__playersjogando[i].getAposta()
@@ -181,9 +191,8 @@ class Cassino:
                     self.getPlayersJogando()[i].setTip(apostou*36)
                     self.setTipBanco(-apostou*36)
                 else:
-                    self.__playersjogando[i].getNome()
-                    self.setTipBanco(apostou)
-                    self.getPlayersJogando()[i].setTip(-apostou)
+                    self.setTipBanco(apostou*qtde)
+                    self.getPlayersJogando()[i].setTip(-apostou*qtde)
 
                 #extern
                 if self.__playersjogando[i].getumto12() == True and self.getRoleta().umto12check(self.getRoleta().getNum()):
@@ -241,24 +250,37 @@ class Cassino:
                     self.getPlayersJogando()[i].setTip(apostou*2)
                     self.setTipBanco(-apostou*2)
 
-
-
-
         for i in self.getPlayersJogando():
             i.setApostaZerar()
             i.setProsseguir(True)
             i.setResetar()
 
+            self.falencia(i)
+
+        if self.getTipBanco() < 0:
+            self.gameoverBanco()
+
+
+
         self.bancot.configure(text='DINHEIRO DO BANCO: {}'.format(self.__banco), font="Times 25 bold", fg="red",bg="black")
 
-        # if self.getTipBanco() < 0:
-        #     self.photo = PhotoImage(file="images/preto.gif")
-        #     self.backlabel = Label(root, image=self.photo).place(x=-1, y=-1)
-        #
-        #     self.gameover = tk.Label(root)
-        #     self.gameover.grid(row=0, column=0)
-        #     self.gameover.configure(text='GAME OVER - CASSINO FALIU'.format(self.getTipBanco()), font="Times 25 bold",fg="red", bg="black")
-        #     self.gameover.place(x=500, y=450)
+    def gameoverBanco(self):
+        self.photo = PhotoImage(file="images/preto.gif")
+        self.backlabel = Label(root, image=self.photo).place(x=-1, y=-1)
+
+        self.gameover = tk.Label(root)
+        self.gameover.grid(row=0, column=0)
+        self.gameover.configure(text='GAME OVER, BANCO FALIU', font="Times 70 bold", fg="RED", bg="black")
+        self.gameover.place(x=400, y=400)
+
+    def gameoverPlayers(self):
+        self.photo = PhotoImage(file="images/preto.gif")
+        self.backlabel = Label(root, image=self.photo).place(x=-1, y=-1)
+
+        self.gameover = tk.Label(root)
+        self.gameover.grid(row=0, column=0)
+        self.gameover.configure(text='GAME OVER, BANCO GANHOU', font="Times 70 bold", fg="RED", bg="black")
+        self.gameover.place(x=400, y=400)
 
 
 
@@ -282,10 +304,17 @@ class Cassino:
             for i in self.getPlayersJogando():
                 i.setJogadas("CLEAR")
 
-        self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
-        self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
-        self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
-        self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
+        if self.getPl() == 0:
+            self.gameoverPlayers()
+        else:
+            self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()), font="Times 25 bold", fg="red", bg="black")
+            self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()), font="Times 25 bold", fg="red", bg="black")
+            self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()), font="Times 25 bold", fg="red", bg="black")
+            self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()), font="Times 25 bold", fg="red", bg="black")
+
+    def getFalencia(self):
+        print(len(self.__falencia))
+        return len(self.__falencia)
 
     def menu(self):
 
@@ -406,7 +435,23 @@ class Cassino:
 
         girar = tkinter.Button(master=root, text="GIRAR", width=20, fg="red",bg="black", font="Times 13 bold",command=lambda: self.getNumganhador()).place(x=1530, y=38)
 
-        limparjogadas = tkinter.Button(master=root, text="LIMPAR JOGADAS", width=20, fg="red",bg="black", font="Times 13 bold",command=lambda: self.limparJogada()).place(x=130, y=970)
+        limparjogadas = tkinter.Button(master=root, text="LIMPAR JOGADAS", width=20, fg="red",bg="black", font="Times 13 bold",command=lambda: self.limparJogada()).place(x=50, y=970)
+
+    def falencia(self,player):
+        if player.getTip() <= 0:
+            self.__faliram += " | " + player.getNome() + " | "
+            self.__players -= 1
+            self.__falencia.append(player)
+            self.__playersjogando.remove(player)
+            self.faliram.configure(text='JOGADORES QUE FALIRAM: {}'.format(self.getFaliram()), font="Times 20 bold", fg="RED", bg="black")
+
+        self.valornatela.configure(text='{}'.format(self.__playersjogando[self.getVez()].getAposta()),font="Times 25 bold", fg="red", bg="black")
+        self.jogadordavez.configure(text='{}'.format(self.__playersjogando[self.getVez()].getNome()),font="Times 25 bold", fg="red", bg="black")
+        self.jogadortip.configure(text='SEU DINHEIRO: {}'.format(self.__playersjogando[self.getVez()].getTip()),font="Times 25 bold", fg="red", bg="black")
+        self.listadejogadas.configure(text='JOGADAS: {}'.format(self.__playersjogando[self.getVez()].getJogadas()),font="Times 25 bold", fg="red", bg="black")
+
+    def getFaliram(self):
+        return self.__faliram
 
     def jogar(self):
         self.setPlayers()
@@ -462,6 +507,16 @@ class Cassino:
             self.validade.grid(row=0, column=0)
             self.validade.configure(text='', font="Times 60 bold", fg="yellow", bg="black")
             self.validade.place(x=120, y=100)
+
+            self.faliram = tk.Label(root)
+            self.faliram.grid(row=0, column=0)
+            self.faliram.configure(text='JOGADORES QUE FALIRAM: {}'.format(self.getFaliram()), font="Times 20 bold", fg="RED", bg="black")
+            self.faliram.place(x=1000, y=965)
+
+            self.gameover = tk.Label(root)
+            self.gameover.grid(row=0, column=0)
+            self.gameover.configure(text='', font="Times 70 bold", fg="RED", bg="black")
+            self.gameover.place(x=400, y=400)
 
 
 
