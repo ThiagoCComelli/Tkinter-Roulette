@@ -284,8 +284,6 @@ class Cassino:
 
 
 
-
-
     def getNumganhador(self):
         if self.getVez() == self.getPl():
             if self.getModo() == "EUROPEU":
