@@ -282,7 +282,6 @@ class Cassino:
         self.gameover.place(x=400, y=400)
 
 
-
     def getNumganhador(self):
         if self.getVez() == self.getPl():
             if self.getModo() == "EUROPEU":
