@@ -3,7 +3,6 @@ import time
 import tkinter
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import *
 from random import randint
 from roleta import Roleta
 from players import Player
@@ -515,9 +514,6 @@ class Cassino:
             self.gameover.grid(row=0, column=0)
             self.gameover.configure(text='', font="Times 70 bold", fg="RED", bg="black")
             self.gameover.place(x=400, y=400)
-
-
-
 
 root = tk.Tk()
 Cassino(root)
